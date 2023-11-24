@@ -1,0 +1,860 @@
+{
+	"info": {
+		"name": "GraphQL",
+		"description": "GraphQL-Schnittstelle",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "Suche isrc, version, art und titel vom Cd mit ID 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit den Properties', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { cd } = body.data;\r",
+									"    const { isrc, version, art, skonto, titel } = cd;\r",
+									"    pm.expect(isrc).to.be.a('string');\r",
+									"    pm.expect(version).to.be.a('number').that.is.gte(0);\r",
+									"    pm.expect(art).to.be.a('string');\r",
+									"    pm.expect(skonto).to.match(/ %$/u);\r",
+									"    pm.expect(titel.titel).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id: ID! = \"1\") {\r\n  cd(id: $id) {\r\n    isrc\r\n    version\r\n    art\r\n    skonto(short: true)\r\n    titel {\r\n      titel\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"1\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suche isrc von einem Cd mit nicht-vorhandener 999999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit errors', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const { message, path, extensions } = errors[0];\r",
+									"    pm.expect(message).to.include('999999');\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('cd');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id: ID! = \"1\") {\r\n  cd(id: $id) {\r\n    isrc\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"999999\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suche id, version und titel von allen Cds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit den Properties', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { cds } = body.data;\r",
+									"    pm.expect(cds).to.be.an('array').that.is.not.empty;\r",
+									"    cds.forEach(cd => {\r",
+									"        const { id, version, art, titel } = cd;\r",
+									"        pm.expect(id).to.be.a('number').that.is.gte(0);\r",
+									"        pm.expect(version).to.be.a('number').that.is.gte(0);\r",
+									"        pm.expect(art).to.be.a('string');\r",
+									"        pm.expect(titel.titel).to.be.a('string');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\r\n  cds {\r\n    id\r\n    version\r\n    art\r\n    titel {\r\n      titel\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suche genre von Cds mit Titel Abbey Road",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit art', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { cds } = body.data;\r",
+									"    pm.expect(cds).to.be.an('array').that.is.not.empty;\r",
+									"    cds.map(cd => cd.art)\r",
+									"        .forEach(art => pm.expect(art).to.be.a('string'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($titel: String = \"Abbey Road\") {\r\n  cds(titel: $titel) {\r\n    art\r\n  }\r\n}",
+								"variables": "{\r\n  \"titel\": \"Abbey Road\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suche genre, titel von Cds mit Teilstring \"ta\" im Titel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit art, titel', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { cds } = body.data;\r",
+									"    pm.expect(cds).to.be.an('array').that.is.not.empty;\r",
+									"    cds.forEach(cd => {\r",
+									"        const { art, titel } = cd;\r",
+									"        pm.expect(art).to.be.a('string');\r",
+									"        pm.expect(titel.titel).to.be.a('string').that.includes('ta');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($titel: String = \"a\") {\r\n  cds(titel: $titel) {\r\n    art\r\n       titel {\r\n      titel\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"titel\": \"ta\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suche genre von Cds mit nicht-vorhandenem Titel Nichtvorhanden",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit errors', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const { message, path, extensions } = errors[0];\r",
+									"    pm.expect(message).to.be.a('string').that.includes('Nichtvorhanden');\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('cds');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($titel: String = \"Nichtvorhanden\") {\r\n  cds(titel: $titel) {\r\n    art\r\n  }\r\n}",
+								"variables": "{\r\n  \"titel\": \"Nichtvorhanden\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Queries mit der GraphQL-Schnittstelle"
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login als admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit Token', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { token } = body.data.login;\r",
+									"    pm.expect(token).to.be.a('string').that.matches(/.+\\..+\\..+/u);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n    login(username: \"admin\", password: \"p\") {\r\n        token\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login mit falschem Passwort",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit Fehlermeldung', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const error = errors[0];\r",
+									"    const { message, path, extensions } = error;\r",
+									"    pm.expect(message).to.be.a('string').that.includes('Passwort');\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('login');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n    login(username: \"admin\", password: \"FALSCH\") {\r\n        token\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Login mit der GraphQL-Schnittstelle"
+		},
+		{
+			"name": "Mutation",
+			"item": [
+				{
+					"name": "Neues Cd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit den Properties', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { data } = body;\r",
+									"    pm.expect(data.create.id).to.be.a('number').that.is.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  create(\r\n    input: {\r\n      isrc: \"978-0-321-19368-1\",\r\n      bewertung: 1,\r\n      art: ROCK,\r\n      preis: 10.20,\r\n      skonto: 0.19,\r\n      verfuegbar: true,\r\n      erscheinungsdatum: \"2022-01-31\",\r\n      interpret: \"Rudolf\",\r\n            titel: {\r\n        titel: \"Können vor Lachen\",\r\n        untertitel: \"Hallo\"\r\n      },\r\n      lieder: [{\r\n        liedTitel: \"Comeback\",\r\n        contentType: \"3\"\r\n      }]\r\n    }\r\n  ) {\r\n      id\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Neues Cd mit ungültigen Daten",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Fehlermeldungen im Response Body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const { message, path, extensions } = errors[0];\r",
+									"    pm.expect(message).to.be.a('string');\r",
+									"    const props = ['titel.titel', 'isrc', 'bewertung', 'preis', 'erscheinungsdatum', 'interpret'];\r",
+									"    props.forEach(prop => pm.expect(message).to.include(prop));\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('create');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  create(\r\n    input: {\r\n      isrc: \"falsche-isrc\",\r\n      bewertung: 999,\r\n      art: HIPHOP,\r\n      preis: -1,\r\n      skonto: 0,\r\n      verfuegbar: true,\r\n      erscheinungsdatum: \"12345-123-123\",\r\n      interpret: \"anyInterpret\",\r\n            titel: {\r\n        titel: \"?!\"\r\n        untertitel: \"mutationinvalid\"\r\n      }\r\n    }\r\n  ) {\r\n      id\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cd mit ID 40 aktualisieren",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit aktualisierter Versionsnummer', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { data } = body;\r",
+									"    pm.expect(data.update.version).to.be.a('number').that.is.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  update(\r\n    input: {\r\n      id: \"40\",\r\n      version: 0,\r\n      isrc: \"DE-UU4-16-00003\",\r\n      bewertung: 5,\r\n      art: ROCK,\r\n      preis: 444.44,\r\n      skonto: 0.099,\r\n      verfuegbar: false,\r\n      erscheinungsdatum: \"2022-04-04\",\r\n      interpret: \"https://update.mutation\",\r\n          }\r\n  ) {\r\n      version\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cd mit ID 40 mit ungültigen Daten aktualisieren",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Fehlermeldungen im Response Body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const { message, path, extensions } = errors[0];\r",
+									"    pm.expect(message).to.be.a('string');\r",
+									"    const props = ['isrc', 'preis', 'erscheinungsdatum', 'interpret'];\r",
+									"    props.forEach(prop => pm.expect(message).to.include(prop));\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('update');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  update(\r\n    input: {\r\n      id: 40,\r\n      version: 0,\r\n      isrc: \"falsche-ISRC\",\r\n      bewertung: -1,\r\n      art: ROCK,\r\n      preis: -1,\r\n      skonto: 2,\r\n      verfuegbar: false,\r\n      erscheinungsdatum: \"12345-123-123\",\r\n      interpret: \"anyInterpret\"\r\n    }\r\n  ) {\r\n      version\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nicht-Vorhandenes Cd aktualisieren",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Fehlermeldungen im Response Body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { errors } = body;\r",
+									"    pm.expect(errors).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    const { message, path, extensions } = errors[0];\r",
+									"    pm.expect(message).to.be.a('string').that.includes('999999');\r",
+									"    pm.expect(path).to.be.an('array').that.has.a.lengthOf(1);\r",
+									"    pm.expect(path[0]).to.be.equal('update');\r",
+									"    pm.expect(extensions.code).to.be.equal('BAD_USER_INPUT');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  update(\r\n    input: {\r\n      id: \"999999\",\r\n      version: 0,\r\n      isrc: \"DE-UU4-16-00003\",\r\n      bewertung: 5,\r\n      art: HIPHOP,\r\n      preis: 10.20,\r\n      skonto: 0.099,\r\n      verfuegbar: false,\r\n      erscheinungsdatum: \"2022-02-01\",\r\n            interpret: \"https://nicht.vorhanden.de/\"\r\n    }\r\n  ) {\r\n      version\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cd mit ID 60 löschen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Statuscode 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test('Content-Type application/json', () => {\r",
+									"    const { response } = pm;\r",
+									"    const contentType = response.headers.get('Content-Type');\r",
+									"    pm.expect(contentType).to.match(/^application\\/json(; charset=utf-8)?/u);\r",
+									"});\r",
+									"pm.test('Body mit den Properties', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    const { data } = body;\r",
+									"    pm.expect(data.delete).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\r\n  delete(id: \"60\")\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql_url}}",
+							"host": [
+								"{{graphql_url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Neuanlegen, Ändern und Löschen mit der GraphQL-Schnittstelle",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'https://localhost:3000/graphql',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"    },",
+							"    body: JSON.stringify({",
+							"        query: `",
+							"            mutation {",
+							"                login(username: \"admin\", password: \"p\") {",
+							"                    token",
+							"                }",
+							"            }",
+							"        `",
+							"    })",
+							"}, (err, res) => {",
+							"    pm.collectionVariables.set('TOKEN', res.json().data.login.token);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "graphql_url",
+			"value": "{{base_url}}/graphql",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,88 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+' Preview durch <Alt>d
+
+@startuml Anwendungskern
+
+interface Promise<T>
+
+package @nestjs/common {
+  class "@Injectable" as Injectable
+  hide Injectable circle
+}
+
+package typeorm {
+  class Repository<T>
+}
+
+package @nestjs/typeorm {
+  class "@InjectRepository" as InjectRepository
+  hide InjectRepository circle
+}
+
+package mail {
+  class MailService
+}
+
+package cd {
+  package entity {
+    class Cd
+  }
+
+  package service #DDDDDD {
+    class CdInvalid
+    class TitelExists
+    class IsrcExists
+    class VersionInvalid
+    class VersionOutdated
+
+    class CdWriteService << control >> <<@Injectable()>> {
+      + async create(cd: Cd): Promise<string|CdInvalid|TitelExists|IsrcExists>
+      + async update(id: number, cd: Cd, version: string): Promise<number|CdInvalid|TitelExists|IsrcExists|VersionInvalid|VersionOutdated>
+      + async delete(id: number): Promise<boolean>
+    }
+
+    CdWriteService o--> "1" CdValidationService: validationService
+    CdWriteService o--> "1" CdReadService: readService
+    CdWriteService o--> "1" Repository: @InjectRepository repo
+    CdWriteService o--> "1" MailService: mailService
+
+    CdWriteService .up.> Injectable
+    CdWriteService .up.> InjectRepository
+
+    CdWriteService .up.> Promise
+    CdWriteService ..> Cd
+    CdWriteService .up.> CdInvalid
+    CdWriteService .up.> TitelExists
+    CdWriteService .up.> IsrcExists
+    CdWriteService .up.> VersionInvalid
+    CdWriteService .up.> VersionOutdated
+
+    CdInvalid .up[hidden].> Cd
+    Cd .up[hidden].> Promise
+    Cd .up[hidden].> Injectable
+    Cd .up[hidden].> InjectRepository
+    TitelExists .up[hidden].> Cd
+    CdValidationService .[hidden].> Repository
+    CdValidationService .[hidden].> MailService
+  }
+}
+
+hide empty members
+
+footer (c) Jürgen Zimmermann
+
+@enduml
