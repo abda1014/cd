@@ -212,9 +212,11 @@ pipeline {
                         }
                     }
                     // https://www.jenkins.io/doc/pipeline/steps/pipeline-utility-steps/#zip-create-zip-file
-                    zip zipFile: 'cd.zip', archive: false, dir: 'dist'
-                    // jobs/cd/builds/.../archive/cd.zip
-                    archiveArtifacts 'cd.zip'
+                  // ZIP-Archiv erstellen
+                  zip zipFile: 'cd.zip', dirPath: 'dist'
+
+// Artefakt archivieren
+                  archiveArtifacts artifacts: 'cd.zip', onlyIfSuccessful: true
                 }
             }
         }
@@ -222,7 +224,7 @@ pipeline {
         stage('Docker Image bauen') {
             steps {
                 echo 'TODO: Docker-Image bauen und veroeffentlichen'
-                // sh 'docker buildx build --tag juergenzimmermann/cd:2023.10.0 .'
+                // sh 'docker buildx build --tag davidabaham/cd:2023.10.0 .'
             }
         }
 
