@@ -212,11 +212,9 @@ pipeline {
                         }
                     }
                     // https://www.jenkins.io/doc/pipeline/steps/pipeline-utility-steps/#zip-create-zip-file
-                  // ZIP-Archiv erstellen
-                  zip zipFile: 'cd.zip', dirPath: 'dist'
-
-// Artefakt archivieren
-                  archiveArtifacts artifacts: 'cd.zip', onlyIfSuccessful: true
+                  zip zipFile: 'cd.zip', archive: false, dir: 'dist'
+                  // jobs/cd/builds/.../archive/cd.zip
+                  archiveArtifacts 'cd.zip'
                 }
             }
         }
