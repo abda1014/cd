@@ -25,7 +25,6 @@ import {
     IsArray,
     IsBoolean,
     IsISO8601,
-    IsISRC,
     IsInt,
     IsOptional,
     IsPositive,
@@ -47,7 +46,7 @@ export const MAX_RATING = 5;
  */
 export class CdDtoOhneRef {
     // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
-    @IsISRC('12')
+
     @ApiProperty({ example: 'DEUU41600025', type: String })
     readonly isrc!: string;
 
