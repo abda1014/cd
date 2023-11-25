@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file, @typescript-eslint/no-magic-numbers */
+/* eslint-disable max-classes-per-file */
 /*
  * Copyright (C) 2016 - present Juergen Zimmermann, Florian Goebel, Hochschule Karlsruhe
  *
@@ -46,7 +46,6 @@ export const MAX_RATING = 5;
  */
 export class CdDtoOhneRef {
     // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
-
     @ApiProperty({ example: 'DEUU41600025', type: String })
     readonly isrc!: string;
 
@@ -104,4 +103,5 @@ export class CdDTO extends CdDtoOhneRef {
 
     // LiedDTO
 }
+// eslint-disable-next-line eslint-comments/no-unused-enable
 /* eslint-enable max-classes-per-file, @typescript-eslint/no-magic-numbers */
