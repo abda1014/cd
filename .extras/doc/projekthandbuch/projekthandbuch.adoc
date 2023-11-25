@@ -15,7 +15,7 @@
 
 // Preview durch <Strg><Shift>v
 
-= Projekthandcd
+= Projekthandbuch
 Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 :doctype: book
 :toc: left
