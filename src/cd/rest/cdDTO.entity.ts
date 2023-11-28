@@ -103,5 +103,4 @@ export class CdDTO extends CdDtoOhneRef {
 
     // LiedDTO
 }
-// eslint-disable-next-line eslint-comments/no-unused-enable
-/* eslint-enable max-classes-per-file, @typescript-eslint/no-magic-numbers */
+/* eslint-enable max-classes-per-file */

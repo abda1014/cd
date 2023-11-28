@@ -16,7 +16,7 @@
 // Preview durch <Strg><Shift>v
 
 = Projekthandbuch
-Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
+
 :doctype: book
 :toc: left
 :sectanchors:
@@ -32,16 +32,13 @@ Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 // http://de.plantuml.com/component.html
 // https://github.com/odrotbohm/asciidoctor-plantuml
 
-IMPORTANT: Copyright (C) 2020 - present Jürgen Zimmermann, Hochschule Karlsruhe. +
-           Free use of this software is granted under the terms of the
-           GNU General Public License (GPL) v3. +
-           For the full text of the license, see the http://www.gnu.org/licenses/gpl-3.0.html[license] file.
+I
 
 == Der Applikationsserver
 
 === Der Applikationsserver im Überblick
 
-Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt.
+
 
 .Use Cases
 [plantuml,use-cases,svg]
@@ -49,8 +46,7 @@ Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt.
 include::use-cases.plantuml[]
 ----
 
-Quisque velit nisi, pretium ut lacinia in, elementum id enim. Nulla porttitor
-accumsan tincidunt.
+
 
 .Komponentendiagramm
 [plantuml,komponenten,svg]
@@ -60,11 +56,7 @@ include::komponenten.plantuml[]
 
 === Die REST-Schnittstelle
 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet
-ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit
-amet ligula.
+
 
 ."CdGetController" für Lesezugriffe an der REST-Schnittstelle
 [plantuml,CdGetController,svg]
@@ -72,8 +64,7 @@ amet ligula.
 include::CdGetController.plantuml[]
 ----
 
-Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec
-sollicitudin molestie malesuada.
+
 
 ."Sequenzdiagramm" mit den Methodenaufrufen
 [plantuml,sequenzdiagramm,svg]
@@ -81,8 +72,7 @@ sollicitudin molestie malesuada.
 include::sequenzdiagramm.plantuml[]
 ----
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-tempor invidunt ut.
+
 
 ."CdWriteController" für Schreibzugriffe an der REST-Schnittstelle
 [plantuml,CdGetController,svg]
@@ -92,7 +82,7 @@ include::CdWriteController.plantuml[]
 
 === Die GraphQL-Schnittstelle
 
-Donec sollicitudin molestie malesuada. Donec rutrum congue leo eget malesuada.
+
 
 .CdQueryResolver für Lesezugriffe an der GraphQL-Schnittstelle
 [plantuml,CdQueryResolver,svg]
@@ -100,8 +90,7 @@ Donec sollicitudin molestie malesuada. Donec rutrum congue leo eget malesuada.
 include::CdQueryResolver.plantuml[]
 ----
 
-Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a
-pellentesque nec, egestas non nisi.
+
 
 .CdMutationResolver für Schreibzugriffe an der GraphQL-Schnittstelle
 [plantuml,CdMutationResolver,svg]
@@ -111,7 +100,7 @@ include::CdMutationResolver.plantuml[]
 
 === Die Geschäftslogik
 
-Donec rutrum congue leo eget malesuada. Donec rutrum congue leo eget malesuada.
+D
 
 ."CdReadService" von der Geschäftslogik
 [plantuml,CdReadService,svg]
@@ -119,8 +108,7 @@ Donec rutrum congue leo eget malesuada. Donec rutrum congue leo eget malesuada.
 include::CdReadService.plantuml[]
 ----
 
-Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget
-malesuada.
+
 
 ."CdWriteService" von der Geschäftslogik
 [plantuml,CdWriteService,svg]
@@ -130,8 +118,7 @@ include::CdWriteService.plantuml[]
 
 === Klasse für Entities
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat,
-accumsan id imperdiet et, porttitor at sem.
+
 
 .Entity
 [plantuml,Cd,svg]
@@ -141,7 +128,6 @@ include::Cd.plantuml[]
 
 === ER-Diagramm
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 .ER-Diagramm
 [plantuml,ER-Diagramm,svg]

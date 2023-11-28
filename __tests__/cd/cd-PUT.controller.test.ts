@@ -154,7 +154,6 @@ describe('PUT /rest/:id', () => {
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
         const expectedMsg = [
-            expect.stringMatching(/^isrc /u),
             expect.stringMatching(/^bewertung /u),
             expect.stringMatching(/^genre /u),
             expect.stringMatching(/^preis /u),

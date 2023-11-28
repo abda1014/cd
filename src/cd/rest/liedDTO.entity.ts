@@ -29,11 +29,11 @@ import { MaxLength } from 'class-validator';
  */
 export class LiedDTO {
     @MaxLength(32)
-    @ApiProperty({ example: 'Die Beschriftung', type: String })
+    @ApiProperty({ example: 'Hallo', type: String })
     readonly liedTitel!: string;
 
     @MaxLength(16)
-    @ApiProperty({ example: 'image/png', type: String })
+    @ApiProperty({ example: '2', type: String })
     readonly laenge!: string;
 }
 /* eslint-enable @typescript-eslint/no-magic-numbers */

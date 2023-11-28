@@ -45,7 +45,7 @@ package cd.entity {
     @Column() readonly version: number
     @Column() readonly isrc: string
     @Column() readonly bewertung: number
-    @Column() readonly art: CdGenre
+    @Column() readonly genre: CdGenre
     @Column() readonly preis: number
     @Column() readonly skonto: number
     @Column() readonly verfuegbar: boolean

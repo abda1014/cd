@@ -56,7 +56,7 @@ import { Titel } from './titel.entity.js';
 import { dbType } from '../../config/dbtype.js';
 
 /**
- * Alias-Typ für gültige Strings bei der Genre eines Cdes.
+ * Alias-Typ für gültige Strings bei der Genre einer Cd.
  */
 export type CdGenre = 'HIPHOP' | 'ROCK';
 
@@ -115,7 +115,7 @@ export class Cd {
     readonly erscheinungsdatum: Date | string | undefined;
 
     @Column('varchar', { length: 40 })
-    @ApiProperty({ example: 'Freddie Mercury', type: String })
+    @ApiProperty({ example: 'https://test.de/', type: String })
     readonly interpret: string | undefined;
 
     // undefined wegen Updates
@@ -130,11 +130,6 @@ export class Cd {
     })
     readonly lieder: Lied[] | undefined;
 
-    // https://typeorm.io/entities#special-columns
-    // https://typeorm.io/entities#column-types-for-postgres
-    // https://typeorm.io/entities#column-types-for-mysql--mariadb
-    // https://typeorm.io/entities#column-types-for-sqlite--cordova--react-native--expo
-    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
     @CreateDateColumn({
         type: dbType === 'sqlite' ? 'datetime' : 'timestamp',
     })

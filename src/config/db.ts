@@ -122,13 +122,15 @@ switch (dbType) {
     }
     default: {
         typeOrmModuleOptions = {
-            type: 'postgres',
+            type: 'mysql',
             host,
-            port: 5432,
+            port: 3306,
             username,
             password: pass,
             database,
             entities,
+            namingStrategy,
+            supportBigNumbers: true,
             logging,
             logger,
         };

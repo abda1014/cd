@@ -29,9 +29,9 @@ INSERT INTO cd(id, version, isrc, bewertung, genre, preis, skonto, verfuegbar, e
 INSERT INTO cd(id, version, isrc, bewertung, genre, preis, skonto, verfuegbar, erscheinungsdatum, interpret,  erzeugt, aktualisiert) VALUES
     (40,0,'DEUU41600003',4,'HIPHOP',44.4,0.044,true,'2022-02-04','Mark Forster','2022-02-04 00:00:00','2022-02-04 00:00:00');
 INSERT INTO cd(id, version, isrc, bewertung, genre, preis, skonto, verfuegbar, erscheinungsdatum, interpret,  erzeugt, aktualisiert) VALUES
-    (50,0,'DEUU416-00004',2,'ROCK',55.5,0.055,true,'2022-02-05','Santana','2022-02-05 00:00:00','2022-02-05 00:00:00');
+    (50,0,'DEUU41600004',2,'ROCK',55.5,0.055,true,'2022-02-05','Santana','2022-02-05 00:00:00','2022-02-05 00:00:00');
 INSERT INTO cd(id, version, isrc, bewertung, genre, preis, skonto, verfuegbar, erscheinungsdatum, interpret,  erzeugt, aktualisiert) VALUES
-    (60,0,'DEUU416-00005',1,'ROCK',66.6,0.066,true,'2022-02-06','Lil UZi','2022-02-06 00:00:00','2022-02-06 00:00:00');
+    (60,0,'DEUU41600005',1,'ROCK',66.6,0.066,true,'2022-02-06','Lil UZi','2022-02-06 00:00:00','2022-02-06 00:00:00');
 
 INSERT INTO titel(id, titel, untertitel, cd_id) VALUES
     (1,'Abbey Road','1969',1);

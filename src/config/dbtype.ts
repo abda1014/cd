@@ -29,4 +29,4 @@ const type: string | undefined = config.db?.type;
 export const dbType =
     type === 'postgres' || type === 'mysql' || type === 'sqlite'
         ? (type as string)
-        : 'postgres';
+        : 'mysql';

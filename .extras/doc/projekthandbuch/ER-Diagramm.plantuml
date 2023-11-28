@@ -29,7 +29,7 @@ entity "Cd" {
   * version: integer
   * isrc: text
   * bewertung: number
-  * art: text
+  * genre: text
   * preis: number
   * skonto: number
   * verfuegbar: boolean

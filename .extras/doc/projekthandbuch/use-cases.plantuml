@@ -26,12 +26,10 @@ rectangle cd {
     Admin --> (Cd suchen)
     Admin --> (Cd anlegen)
     Admin --> (Cd ändern)
-    Admin --> (Cd löschen)
     Kunde --> (Cd suchen)
     Kunde --> (Cd anlegen)
     Kunde --> (Cd ändern)
 }
 
-footer (c) Jürgen Zimmermann
 
 @enduml

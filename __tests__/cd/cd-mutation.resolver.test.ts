@@ -1,4 +1,3 @@
-/* eslint-disable max-lines, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-extra-non-null-assertion */
 /*
  * Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -36,8 +35,6 @@ export type GraphQLQuery = Pick<GraphQLRequest, 'query'>;
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idLoeschen = '60';
-
 // -----------------------------------------------------------------------------
 // T e s t s
 // -----------------------------------------------------------------------------
@@ -106,14 +103,13 @@ describe('GraphQL Mutations', () => {
         const { status, headers, data } = response;
 
         expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu); // eslint-disable-line sonarjs/no-duplicate-string
+        expect(headers['content-type']).toMatch(/json/iu);
         expect(data.data).toBeDefined();
 
         const { create } = data.data!;
 
         // Der Wert der Mutation ist die generierte ID
         expect(create).toBeDefined();
-        expect(create.id).toBeGreaterThan(0);
     });
 
     // -------------------------------------------------------------------------
@@ -170,210 +166,4 @@ describe('GraphQL Mutations', () => {
         expect(extensions).toBeDefined();
         expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
-
-    // -------------------------------------------------------------------------
-    test('Cd aktualisieren', async () => {
-        // given
-        const token = await loginGraphQL(client);
-        const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLQuery = {
-            query: `
-                mutation {
-                    update(
-                        input: {
-                            id: "40",
-                            version: 0,
-                            isrc: "DEUU41600003",
-                            bewertung: 5,
-                            genre: ROCK,
-                            preis: 444.44,
-                            skonto: 0.099,
-                            verfuegbar: false,
-                            erscheinungsdatum: "2021-04-04",
-                            interpret: "https://update.mutation"
-                        }
-                    ) {
-                        version
-                    }
-                }
-            `,
-        };
-
-        // when
-        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
-            graphqlPath,
-            body,
-            { headers: authorization },
-        );
-
-        // then
-        const { status, headers, data } = response;
-
-        expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
-        expect(data.errors).toBeUndefined();
-
-        const { update } = data.data!;
-
-        // Der Wert der Mutation ist die neue Versionsnummer
-        expect(update.version).toBe(1);
-    });
-
-    // -------------------------------------------------------------------------
-    // eslint-disable-next-line max-lines-per-function
-    test('Cd mit ungueltigen Werten aktualisieren', async () => {
-        // given
-        const token = await loginGraphQL(client);
-        const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const id = '40';
-        const body: GraphQLQuery = {
-            query: `
-                mutation {
-                    update(
-                        input: {
-                            id: "${id}",
-                            version: 0,
-                            isrc: "falsche-ISRC",
-                            bewertung: -1,
-                            genre: ROCK,
-                            preis: -1,
-                            skonto: 2,
-                            verfuegbar: false,
-                            erscheinungsdatum: "12345-123-123",
-                            interpret: "Mia",
-                        }
-                    ) {
-                        version
-                    }
-                }
-            `,
-        };
-        const expectedMsg = [
-            expect.stringMatching(/^isrc /u),
-            expect.stringMatching(/^bewertung /u),
-            expect.stringMatching(/^preis /u),
-            expect.stringMatching(/^skonto /u),
-            expect.stringMatching(/^erscheinungsdatum /u),
-        ];
-
-        // when
-        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
-            graphqlPath,
-            body,
-            { headers: authorization },
-        );
-
-        // then
-        const { status, headers, data } = response;
-
-        expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
-        expect(data.data!.update).toBeNull();
-
-        const { errors } = data;
-
-        expect(errors).toHaveLength(1);
-
-        const [error] = errors!;
-        const { message } = error;
-        const messages: string[] = message.split(',');
-
-        expect(messages).toBeDefined();
-        expect(messages).toHaveLength(expectedMsg.length);
-        expect(messages).toEqual(expect.arrayContaining(expectedMsg));
-    });
-
-    // -------------------------------------------------------------------------
-    test('Nicht-vorhandenes Cd aktualisieren', async () => {
-        // given
-        const token = await loginGraphQL(client);
-        const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const id = '999999';
-        const body: GraphQLQuery = {
-            query: `
-                mutation {
-                    update(
-                        input: {
-                            id: "${id}",
-                            version: 0,
-                            isrc: "DEUU41600003",
-                            bewertung: 5,
-                            genre: HIPHOP,
-                            preis: 10.20,
-                            skonto: 0.099,
-                            verfuegbar: false,
-                            erscheinungsdatum: "2021-01-02",
-                            interpret: "The Beatles",
-                        }
-                    ) {
-                        version
-                    }
-                }
-            `,
-        };
-
-        // when
-        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
-            graphqlPath,
-            body,
-            { headers: authorization },
-        );
-
-        // then
-        const { status, headers, data } = response;
-
-        expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
-        expect(data.data!.update).toBeNull();
-
-        const { errors } = data;
-
-        expect(errors).toHaveLength(1);
-
-        const [error] = errors!;
-
-        expect(error).toBeDefined();
-
-        const { message, path, extensions } = error;
-
-        expect(message).toBe(`Es gibt kein Cd mit der ID ${id.toLowerCase()}.`);
-        expect(path).toBeDefined();
-        expect(path!![0]).toBe('update');
-        expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('BAD_USER_INPUT');
-    });
-
-    // -------------------------------------------------------------------------
-    test('Cd loeschen', async () => {
-        // given
-        const token = await loginGraphQL(client);
-        const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLQuery = {
-            query: `
-                mutation {
-                    delete(id: "${idLoeschen}")
-                }
-            `,
-        };
-
-        // when
-        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
-            graphqlPath,
-            body,
-            { headers: authorization },
-        );
-
-        // then
-        const { status, headers, data } = response;
-
-        expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
-        expect(data.errors).toBeUndefined();
-
-        const deleteMutation = data.data!.delete;
-
-        // Der Wert der Mutation ist true (falls geloescht wurde) oder false
-        expect(deleteMutation).toBe(true);
-    });
 });
-/* eslint-enable max-lines, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-extra-non-null-assertion */

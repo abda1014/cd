@@ -32,14 +32,14 @@
 # https://docs.docker.com/compose/compose-file/14-include
 # Der "service" fuer das DB-System muss fuer "depends_on" bekannt sein
 include:
-  - path: ./db/postgres/compose.yml
-  #- path: ./db/mysql/compose.yml
+  #- path: ./db/postgres/compose.yml
+  - path: ./db/mysql/compose.yml
   - path: ./fakesmtp/compose.yml
 
 # https://docs.docker.com/compose/compose-file/05-services
 services:
   cd:
-    image: juergenzimmermann/cd:2023.10.0-distroless
+    image: davidabraham/cd:2023.10.0-distroless
     depends_on:
       db:
         condition: service_healthy

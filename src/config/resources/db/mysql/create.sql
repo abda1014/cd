@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS cd (
     verfuegbar     BOOLEAN NOT NULL DEFAULT FALSE,
     erscheinungsdatum         DATE,
     interpret      VARCHAR(40),
-    schlagwoerter VARCHAR(64),
     erzeugt       DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     aktualisiert  DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 ) TABLESPACE cdspace ROW_FORMAT=COMPACT;
@@ -52,7 +51,7 @@ ALTER TABLE titel AUTO_INCREMENT=1000;
 
 CREATE TABLE IF NOT EXISTS lied (
     id              INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    liedTitel    VARCHAR(32) NOT NULL,
+    lied_Titel    VARCHAR(32) NOT NULL,
     laenge    VARCHAR(16) NOT NULL,
     cd_id         CHAR(36) NOT NULL references cd(id),
 

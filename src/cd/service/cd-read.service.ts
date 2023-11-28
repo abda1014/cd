@@ -20,9 +20,10 @@
  * @packageDocumentation
  */
 
-import { Cd, type CdGenre } from './../entity/cd.entity.js';
+import { Cd, type CdGenre } from '../entity/cd.entity.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBuilder } from './query-builder.js';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import RE2 from 're2';
 import { getLogger } from '../../logger/logger.js';
 
@@ -30,7 +31,7 @@ import { getLogger } from '../../logger/logger.js';
  * Typdefinition für `findById`
  */
 export interface FindByIdParams {
-    /** ID des gesuchten Cds */
+    /** ID der gesuchten Cds */
     readonly id: number;
     /** Sollen die Lieder mitgeladen werden? */
     readonly mitLieder?: boolean;
@@ -44,8 +45,6 @@ export interface Suchkriterien {
     readonly verfuegbar?: boolean;
     readonly erscheinungsdatum?: string;
     readonly interpret?: string;
-    readonly javascript?: string;
-    readonly typescript?: string;
     readonly titel?: string;
 }
 
@@ -82,8 +81,9 @@ export class CdReadService {
     //              Im Promise-Objekt ist dann die Fehlerursache enthalten.
 
     /**
-     * Ein Cd asynchron anhand seiner ID suchen
+     * Eine Cd asynchron anhand seiner ID suchen
      * @param id ID des gesuchten Cdes
+     * @param mitLieder
      * @returns Das gefundene Cd vom Typ [Cd](cd_entity_cd_entity.Cd.html)
      *          in einem Promise aus ES2015.
      * @throws NotFoundException falls kein Cd mit der ID existiert
@@ -93,7 +93,7 @@ export class CdReadService {
         this.#logger.debug('findById: id=%d', id);
 
         // https://typeorm.io/working-with-repository
-        // Das Resultat ist undefined, falls kein Datensatz gefunden
+        // Das Ergebnis ist undefined, falls kein Datensatz gefunden
         // Lesen: Keine Transaktion erforderlich
         const cd = await this.#queryBuilder.buildId({ id, mitLieder }).getOne();
         if (cd === null) {

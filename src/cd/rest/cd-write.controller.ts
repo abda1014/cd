@@ -35,7 +35,6 @@ import {
 import {
     Body,
     Controller,
-    Delete,
     Headers,
     HttpCode,
     HttpStatus,
@@ -80,7 +79,7 @@ export class CdWriteController {
     }
 
     /**
-     * Ein neues Cd wird asynchron angelegt. Das neu anzulegende Cd ist als
+     * Eine neue Cd wird asynchron angelegt. Die neu anzulegende Cd ist als
      * JSON-Datensatz im Request-Objekt enthalten. Wenn es keine
      * Verletzungen von Constraints gibt, wird der Statuscode `201` (`Created`)
      * gesetzt und im Response-Header wird `Location` auf die URI so gesetzt,
@@ -96,7 +95,7 @@ export class CdWriteController {
      */
     @Post()
     @RolesAllowed('admin', 'fachabteilung')
-    @ApiOperation({ summary: 'Ein neues Cd anlegen' })
+    @ApiOperation({ summary: 'Eine neue Cd anlegen' })
     @ApiCreatedResponse({ description: 'Erfolgreich neu angelegt' })
     @ApiBadRequestResponse({ description: 'Fehlerhafte Cddaten' })
     @ApiForbiddenResponse({ description: MSG_FORBIDDEN })
@@ -116,11 +115,11 @@ export class CdWriteController {
     }
 
     /**
-     * Ein vorhandenes Cd wird asynchron aktualisiert.
+     * Eine vorhandene Cd wird asynchron aktualisiert.
      *
-     * Im Request-Objekt von Express muss die ID des zu aktualisierenden Cdes
+     * Im Request-Objekt von Express muss die ID des zu aktualisierenden Cds
      * als Pfad-Parameter enthalten sein. Außerdem muss im Rumpf das zu
-     * aktualisierende Cd als JSON-Datensatz enthalten sein. Damit die
+     * aktualisierenden Cd als JSON-Datensatz enthalten sein. Damit die
      * Aktualisierung überhaupt durchgeführt werden kann, muss im Header
      * `If-Match` auf die korrekte Version für optimistische Synchronisation
      * gesetzt sein.
@@ -145,7 +144,7 @@ export class CdWriteController {
     @RolesAllowed('admin', 'fachabteilung')
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({
-        summary: 'Ein vorhandenes Cd aktualisieren',
+        summary: 'Eine vorhandene Cd aktualisieren',
         tags: ['Aktualisieren'],
     })
     @ApiHeader({
@@ -189,27 +188,6 @@ export class CdWriteController {
         const neueVersion = await this.#service.update({ id, cd, version });
         this.#logger.debug('put: version=%d', neueVersion);
         return res.header('ETag', `"${neueVersion}"`).send();
-    }
-
-    /**
-     * Ein Cd wird anhand seiner ID-gelöscht, die als Pfad-Parameter angegeben
-     * ist. Der zurückgelieferte Statuscode ist `204` (`No Content`).
-     *
-     * @param id Pfad-Paramater für die ID.
-     * @param res Leeres Response-Objekt von Express.
-     * @returns Leeres Promise-Objekt.
-     */
-    @Delete(':id')
-    @RolesAllowed('admin')
-    @HttpCode(HttpStatus.NO_CONTENT)
-    @ApiOperation({ summary: 'Cd mit der ID löschen' })
-    @ApiNoContentResponse({
-        description: 'Das Cd wurde gelöscht oder war nicht vorhanden',
-    })
-    @ApiForbiddenResponse({ description: MSG_FORBIDDEN })
-    async delete(@Param('id') id: number) {
-        this.#logger.debug('delete: id=%s', id);
-        await this.#service.delete(id);
     }
 
     #cdDtoToCd(cdDTO: CdDTO): Cd {

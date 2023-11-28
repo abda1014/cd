@@ -20,7 +20,7 @@ schema {
   mutation: Mutation
 }
 
-"Funktionen, um CDsdaten zu lesen"
+"Funktionen, um CDdaten zu lesen"
 type Query {
   cds(titel: String): [Cd!]
 
@@ -39,13 +39,13 @@ type Mutation {
   login(username: String!, password: String!): LoginResult
 }
 
-"Daten zum Titel eines Cdes"
+"Daten zum Titel eines Cds"
 type Titel {
   titel: String!
   untertitel: String
 }
 
-"Daten zum Titel eines Cdes"
+"Daten zum Titel eines Cds"
 type Lied {
   liedTitel: String!
   laenge: String
@@ -69,25 +69,25 @@ type Cd {
   skonto(short: Boolean): String!
 }
 
-"Enum-Typ für die Genre eines Cdes"
+"Enum-Typ für die Genre einer Cds"
 enum Genre {
   HIPHOP
   ROCK
 }
 
-"Daten zum Titel eines neuen Cdes"
+"Daten zum Titel eines neuen Cds"
 input TitelInput {
   titel: String!
   untertitel: String
 }
 
-"Daten zu den Lieder eines Cdes"
+"Daten zu den Lieder eines Cds"
 input LiedInput {
   liedTitel: String!
   laenge: String!
 }
 
-"Daten für ein neues Cd"
+"Daten für ein neue Cd"
 input CdInput {
   isrc: String
   bewertung: Int
@@ -105,7 +105,7 @@ type CreatePayload {
   id: Int
 }
 
-"Daten für ein zu änderndes Cd"
+"Daten für ein zu ändernden Cd"
 input CdUpdateInput {
   id: ID
   version: Int

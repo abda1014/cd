@@ -33,6 +33,7 @@ import { CdReadService } from './cd-read.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lied } from '../entity/lied.entity.js';
 import { MailService } from '../../mail/mail.service.js';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import RE2 from 're2';
 import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
@@ -92,7 +93,7 @@ export class CdWriteService {
     }
 
     /**
-     * Ein vorhandenes Cd soll aktualisiert werden.
+     * Eine vorhandene Cd soll aktualisiert werden.
      * @param cd Das zu aktualisierende Cd
      * @param id ID des zu aktualisierenden Cds
      * @param version Die Versionsnummer für optimistische Synchronisation

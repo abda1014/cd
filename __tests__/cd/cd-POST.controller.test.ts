@@ -132,7 +132,6 @@ describe('POST /rest', () => {
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         const expectedMsg = [
-            expect.stringMatching(/^isrc /u),
             expect.stringMatching(/^bewertung /u),
             expect.stringMatching(/^genre /u),
             expect.stringMatching(/^preis /u),

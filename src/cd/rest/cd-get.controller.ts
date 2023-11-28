@@ -132,12 +132,6 @@ export class CdQuery implements Suchkriterien {
     declare readonly interpret: string;
 
     @ApiProperty({ required: false })
-    declare readonly javascript: string;
-
-    @ApiProperty({ required: false })
-    declare readonly typescript: string;
-
-    @ApiProperty({ required: false })
     declare readonly titel: string;
 }
 
@@ -170,10 +164,10 @@ export class CdGetController {
     }
 
     /**
-     * Ein Cd wird asynchron anhand seiner ID als Pfadparameter gesucht.
+     * Eine Cd wird asynchron anhand seiner ID als Pfadparameter gesucht.
      *
-     * Falls es ein solches Cd gibt und `If-None-Match` im Request-Header
-     * auf die aktuelle Version des Cdes gesetzt war, wird der Statuscode
+     * Falls es eine solche Cd gibt und `If-None-Match` im Request-Header
+     * auf die aktuelle Version der Cd gesetzt war, wird der Statuscode
      * `304` (`Not Modified`) zurückgeliefert. Falls `If-None-Match` nicht
      * gesetzt ist oder eine veraltete Version enthält, wird das gefundene
      * Cd im Rumpf des Response als JSON-Datensatz mit Atom-Links für HATEOAS
@@ -202,11 +196,11 @@ export class CdGetController {
         description: 'Header für bedingte GET-Requests, z.B. "0"',
         required: false,
     })
-    @ApiOkResponse({ description: 'Das Cd wurde gefunden' })
-    @ApiNotFoundResponse({ description: 'Kein Cd zur ID gefunden' })
+    @ApiOkResponse({ description: 'Die Cd wurde gefunden' })
+    @ApiNotFoundResponse({ description: 'Keine Cd zur ID gefunden' })
     @ApiResponse({
         status: HttpStatus.NOT_MODIFIED,
-        description: 'Das Cd wurde bereits heruntergeladen',
+        description: 'Die Cd wurde bereits heruntergeladen',
     })
     async getById(
         @Param('id') idStr: string,
@@ -249,8 +243,8 @@ export class CdGetController {
 
     /**
      * CDs werden mit Query-Parametern asynchron gesucht. Falls es mindestens
-     * ein solches Cd gibt, wird der Statuscode `200` (`OK`) gesetzt. Im Rumpf
-     * des Response ist das JSON-Array mit den gefundenen CDsn, die jeweils
+     * eine solche Cd gibt, wird der Statuscode `200` (`OK`) gesetzt. Im Rumpf
+     * des Response ist das JSON-Array mit den gefundenen CDs, die jeweils
      * um Atom-Links für HATEOAS ergänzt sind.
      *
      * Falls es kein Cd zu den Suchkriterien gibt, wird der Statuscode `404`
@@ -265,7 +259,7 @@ export class CdGetController {
      */
     @Get()
     @ApiOperation({ summary: 'Suche mit Suchkriterien' })
-    @ApiOkResponse({ description: 'Eine evtl. leere Liste mit CDsn' })
+    @ApiOkResponse({ description: 'Eine evtl. leere Liste mit CDs' })
     async get(
         @Query() query: CdQuery,
         @Req() req: Request,

@@ -22,7 +22,6 @@ import { type Cd } from '../entity/cd.entity.js';
 import { CdDTO } from '../rest/cdDTO.entity.js';
 import { CdWriteService } from '../service/cd-write.service.js';
 import { HttpExceptionFilter } from './http-exception.filter.js';
-import { type IdInput } from './cd-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
 import { type Lied } from '../entity/lied.entity.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
@@ -101,16 +100,6 @@ export class CdMutationResolver {
         this.#logger.debug('updateCd: versionResult=%d', versionResult);
         const payload: UpdatePayload = { version: versionResult };
         return payload;
-    }
-
-    @Mutation()
-    @RolesAllowed('admin')
-    async delete(@Args() id: IdInput) {
-        const idStr = id.id;
-        this.#logger.debug('delete: id=%s', idStr);
-        const result = await this.#service.delete(idStr);
-        this.#logger.debug('deleteCd: result=%s', result);
-        return result;
     }
 
     #cdDtoToCd(cdDTO: CdDTO): Cd {

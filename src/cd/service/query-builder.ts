@@ -61,7 +61,7 @@ export class QueryBuilder {
     }
 
     /**
-     * Ein Cd mit der ID suchen.
+     * Eine Cd mit der ID suchen.
      * @param id ID des gesuchten Cdes
      * @returns QueryBuilder
      */
@@ -88,13 +88,10 @@ export class QueryBuilder {
      */
     // z.B. { titel: 'a', bewertung: 5, javascript: true }
     // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
-    // eslint-disable-next-line max-lines-per-function
-    build({ titel, javascript, typescript, ...props }: Suchkriterien) {
+    build({ titel, ...props }: Suchkriterien) {
         this.#logger.debug(
             'build: titel=%s, javascript=%s, typescript=%s, props=%o',
             titel,
-            javascript,
-            typescript,
             props,
         );
 
@@ -120,29 +117,6 @@ export class QueryBuilder {
             );
             useWhere = false;
         }
-
-        if (javascript === 'true') {
-            queryBuilder = useWhere
-                ? queryBuilder.where(
-                      `${this.#cdAlias}.schlagwoerter like '%JAVASCRIPT%'`,
-                  )
-                : queryBuilder.andWhere(
-                      `${this.#cdAlias}.schlagwoerter like '%JAVASCRIPT%'`,
-                  );
-            useWhere = false;
-        }
-
-        if (typescript === 'true') {
-            queryBuilder = useWhere
-                ? queryBuilder.where(
-                      `${this.#cdAlias}.schlagwoerter like '%TYPESCRIPT%'`,
-                  )
-                : queryBuilder.andWhere(
-                      `${this.#cdAlias}.schlagwoerter like '%TYPESCRIPT%'`,
-                  );
-            useWhere = false;
-        }
-
         // Restliche Properties als Key-Value-Paare: Vergleiche auf Gleichheit
         Object.keys(props).forEach((key) => {
             const param: Record<string, any> = {};
